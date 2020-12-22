@@ -1,65 +1,70 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 const api = {
-  key: "e954f4f8b1291941e58d951b29eb5e6d",
-  base: "https://api.openweathermap.org/data/2.5/",
-};
+  key: 'e954f4f8b1291941e58d951b29eb5e6d',
+  base: 'https://api.openweathermap.org/data/2.5/',
+}
 
 function App() {
-  const [query, setQuery] = useState("");
-  const [weather, setWeather] = useState({});
+  const [query, setQuery] = useState('')
+  const [weather, setWeather] = useState({})
+
+  String.prototype.firstSymbolUpper = function (str) {
+    if (!str) return str
+    return str[0].toUpperCase() + str.slice(1)
+  }
 
   const search = (evt) => {
-    if (evt.key === "Enter") {
+    if (evt.key === 'Enter') {
       fetch(`${api.base}weather?q=${query}&units=metric&APPID=${api.key}`)
         .then((res) => res.json())
         .then((result) => {
-          setWeather(result);
-          setQuery("");  
-        });
+          setWeather(result)
+          setQuery('')
+        })
     }
-  }; 
+  }
 
   const dateBuilder = (d) => {
     let months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ]
     let days = [
-      "Sunday",
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ];
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+    ]
 
-    let day = days[d.getDay()];
-    let date = d.getDate();
-    let month = months[d.getMonth()];
-    let year = d.getFullYear();
+    let day = days[d.getDay()]
+    let date = d.getDate()
+    let month = months[d.getMonth()]
+    let year = d.getFullYear()
 
-    return `${day} ${date} ${month} ${year}`;
-  };
+    return `${day} ${date} ${month} ${year}`
+  }
 
   return (
     <div
       className={
-        typeof weather.main != "undefined"
+        typeof weather.main != 'undefined'
           ? weather.main.temp > 20
-            ? "app warm"
-            : "app"
-          : "app"
+            ? 'app warm'
+            : 'app'
+          : 'app'
       }
     >
       <main>
@@ -67,13 +72,13 @@ function App() {
           <input
             type="text"
             className="search-bar"
-            placeholder="Search..."
+            placeholder="Search"
             onChange={(e) => setQuery(e.target.value)}
             value={query}
             onKeyPress={search}
           />
         </div>
-        {typeof weather.main != "undefined" ? (
+        {typeof weather.main != 'undefined' ? (
           <div>
             <div className="location-box">
               <div className="location">
@@ -83,15 +88,19 @@ function App() {
             </div>
             <div className="weather-box">
               <div className="temp">{Math.round(weather.main.temp)}°</div>
-              <div className="weather">{weather.weather[0].main}</div >
+              <div className="weather">
+                {weather.weather[0].description.firstSymbolUpper(
+                  weather.weather[0].description
+                )}
+              </div>
             </div>
           </div>
         ) : (
-          ""
+          ''
         )}
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
